@@ -1,0 +1,68 @@
+---
+import Section from "./section.astro";
+
+const links = [
+  {
+    label: "GitHub",
+    url: "https://github.com/mnmmhq",
+  },
+  {
+    label: "X (Twitter)",
+    url: "https://x.com/remvze",
+  },
+  {
+    label: "Buy Me a Coffee",
+    url: "https://buymeacoffee.com/remvze",
+  },
+];
+---
+
+<Section title="About">
+  <p class="text">
+    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi delectus
+    cumque, quidem nemo ullam qui. Fugit, fugiat, fuga nihil error debitis optio
+    temporibus cupiditate consectetur cumque quo dolore minima sapiente.
+  </p>
+
+  <div class="more">
+    <a href="/about">(read more)</a>
+  </div>
+
+  <div class="links">
+    {links.map((link) => <a href={link.url}>{link.label}</a>)}
+  </div>
+</Section>
+
+<style>
+  .text {
+    color: var(--color-foreground-subtle);
+  }
+
+  .more {
+    margin: 16px 0 32px;
+
+    & a {
+      color: var(--color-foreground);
+      font-weight: 500;
+      font-size: var(--font-sm);
+      text-decoration: none;
+    }
+  }
+
+  .links {
+    display: flex;
+    column-gap: 12px;
+    row-gap: 8px;
+    flex-wrap: wrap;
+
+    & a {
+      color: var(--color-foreground);
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-decoration-color: var(--color-foreground-subtler);
+      text-underline-offset: 4px;
+      font-size: var(--font-sm);
+      font-weight: 500;
+    }
+  }
+</style>
