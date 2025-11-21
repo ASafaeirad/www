@@ -1,0 +1,50 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+
+import Layout from "@/layouts/layout.astro";
+import Container from "@/components/container.astro";
+import Hero from "@/components/hero.astro";
+import Items from "@/components/items.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getCollection("blog");
+  const sortedPosts = posts.sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  );
+  const normalizedPosts = sortedPosts.map((post) => ({
+    date: post.data.date,
+    title: post.data.title,
+    id: post.id,
+    description: post.data.description,
+  }));
+
+  return paginate(normalizedPosts, { pageSize: 2 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<Layout>
+  <Container>
+    <Hero
+      title={page.currentPage === 1 ? "Blog Posts" : `Page ${page.currentPage}`}
+      description="Collection of blog posts."
+      backLabel={page.currentPage === 1 ? "Home 🏠" : "Back 📃"}
+      backUrl={page.currentPage === 1
+        ? "/"
+        : page.currentPage - 1 === 1
+          ? "/blog"
+          : `/blog/${page.currentPage - 1}`}
+    />
+    <Items
+      items={page.data.map((page) => ({
+        title: page.title,
+        description: page.description,
+        url: `/blog/${page.id}`,
+        date: page.date,
+      }))}
+    />
+    <Container />
+  </Container></Layout
+>
